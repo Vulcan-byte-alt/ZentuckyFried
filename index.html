@@ -1648,19 +1648,23 @@
     </script>
 
     <script>
-        // Wait for the entire page to load
-        window.addEventListener('load', () => {
-            // Add a small delay for better visual effect
-            setTimeout(() => {
-                const coverPage = document.getElementById('coverPage');
-                coverPage.classList.add('slide-up');
+        document.addEventListener('DOMContentLoaded', () => {
+                const heroVideo = document.getElementById('heroVideo');
+                if (heroVideo) {
+                    heroVideo.addEventListener('loadeddata', () => {
+                        // Add a small delay for better visual effect
+                        setTimeout(() => {
+                            const coverPage = document.getElementById('coverPage');
+                            coverPage.classList.add('slide-up');
 
-                // Remove the cover page from DOM after animation
-                coverPage.addEventListener('transitionend', () => {
-                    coverPage.style.display = 'none';
-                });
+                            // Remove the cover page from DOM after animation
+                            coverPage.addEventListener('transitionend', () => {
+                                coverPage.style.display = 'none';
+                            });
+                        });
+                    });
+                }
             });
-        });
     </script>
 
     <script>
