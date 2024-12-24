@@ -1,3 +1,5 @@
+<!--Made by Suhail Siyad-->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -704,6 +706,14 @@
             margin-left: 550px;
         }
 
+        .cover-slide {
+            transition: transform 0.8s ease-in-out;
+        }
+
+        .slide-up {
+            transform: translateY(-100%);
+        }
+
         .gradient-button {
             background: linear-gradient(to right, rgba(153, 27, 27, 0.5), rgba(127, 29, 29, 0.5));
             border: none;
@@ -729,18 +739,131 @@
         }
 
         .rotate-in {
-        transform: rotate(0deg);
-        transition: transform 0.3s ease, opacity 0.3s ease;
-    }
+            transform: rotate(0deg);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
 
-    .rotate-out {
-        transform: rotate(90deg);
-        transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-
-
+        .rotate-out {
+            transform: rotate(90deg);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
 
 
+
+        .bg-gradient {
+            background: linear-gradient(135deg, #000000 0%, #1f0000 100%);
+        }
+
+        /* Line animation */
+        @keyframes lineAnimation {
+            0% {
+                width: 0;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        /* Text fade-in and slide-up animation */
+        @keyframes fadeInText {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Text shaking effect */
+        @keyframes textShake {
+            0% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        /* Blinking dots animation */
+        @keyframes blinkDots {
+
+            0%,
+            100% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Animated line */
+        .animate-line {
+            width: 0;
+            height: 2px;
+            background-color: white;
+            margin-top: 20px;
+            margin-bottom: 50px;
+            animation: lineAnimation 2s ease-in-out forwards;
+        }
+
+        /* Animated text */
+        .animate-text {
+            opacity: 0;
+            animation: fadeInText 1.5s 1s ease-out forwards, textShake 1.5s 3s ease-in-out forwards;
+        }
+
+        /* Dot styles with blinking animation */
+        .dot {
+            opacity: 0;
+            animation: blinkDots 1s step-start infinite;
+        }
+
+        /* Sequential animation for each dot */
+        .dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        /* Image styles */
+        .cover-image {
+            width: 350px;
+            /* Set the size of the image */
+            height: auto;
+            margin-bottom: 20px;
+            /* Space between image and line */
+            opacity: 0;
+            animation: fadeInImage 1s ease-in forwards;
+        }
+
+        /* Image fade-in animation */
+        @keyframes fadeInImage {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
 
         @media (max-width: 599px) {
@@ -807,24 +930,24 @@
             }
         }
 
-        @media (min-width: 600px) and (max-width: 1023px){
-            #menu-label{
+        @media (min-width: 600px) and (max-width: 1023px) {
+            #menu-label {
                 margin-left: 360px;
             }
 
-            #feedback-label{
+            #feedback-label {
                 margin-left: 340px;
             }
 
-            #footer-logo{
+            #footer-logo {
                 margin-left: 90px;
             }
 
-            #view{
+            #view {
                 margin-top: 50px;
             }
 
-            #app-label{
+            #app-label {
                 margin-left: 380px;
             }
         }
@@ -832,6 +955,16 @@
 </head>
 
 <body>
+
+    <div id="coverPage" class="cover-slide fixed inset-0 z-50 flex items-center justify-center bg-gradient">
+        <div class="text-center text-white text-4xl font-bold">
+            <img src="load.png" alt="Cover Image" class="cover-image animate-image">
+            <div class="animate-line"></div>
+            <div class="animate-text">
+                Zentucky Chicken<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+            </div>
+        </div>
+    </div>
 
 
     <nav id="navbar" class="fixed w-full z-50 transition-all duration-300">
@@ -1447,7 +1580,7 @@
                         <li><a href="#menu" class="footer-link text-gray-400 hover:text-white">Menu</a></li>
                         <li><a href="#open" class="footer-link text-gray-400 hover:text-white">Timings</a></li>
                         <li><a href="#about" class="footer-link text-gray-400 hover:text-white">About Us</a></li>
-                        
+
                     </ul>
                 </div>
 
@@ -1496,6 +1629,41 @@
     </footer>
 
     <script>
+        // Get the video element
+        const video = document.getElementById('heroVideo');
+
+        // Specify the time in seconds when you want the video to stop and loop
+        const stopTime = 20; // The video will stop at 10 seconds and loop back to the start
+
+        // Event listener to check the current time of the video
+        video.addEventListener('timeupdate', () => {
+            if (video.currentTime >= stopTime) {
+                video.currentTime = 0; // Reset the video to the start
+                video.play(); // Play the video again
+            }
+        });
+
+        // Start the video automatically (optional)
+        video.play();
+    </script>
+
+    <script>
+        // Wait for the entire page to load
+        window.addEventListener('load', () => {
+            // Add a small delay for better visual effect
+            setTimeout(() => {
+                const coverPage = document.getElementById('coverPage');
+                coverPage.classList.add('slide-up');
+
+                // Remove the cover page from DOM after animation
+                coverPage.addEventListener('transitionend', () => {
+                    coverPage.style.display = 'none';
+                });
+            });
+        });
+    </script>
+
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             const burger = document.querySelector('.burger');
             const mobileMenu = document.querySelector('.mobile-menu');
@@ -1508,68 +1676,68 @@
 
     <script>
         // Get DOM elements
-            const menuToggle = document.getElementById('menuToggle');
-            const mobileMenu = document.getElementById('mobileMenu');
-            const burgerIcon = document.getElementById('burgerIcon');
-            const closeIcon = document.getElementById('closeIcon');
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const burgerIcon = document.getElementById('burgerIcon');
+        const closeIcon = document.getElementById('closeIcon');
 
-            // Initial state setup
-            closeIcon.style.display = 'none'; // Ensure close icon is hidden initially
-            burgerIcon.style.display = 'block'; // Ensure burger icon is visible initially
+        // Initial state setup
+        closeIcon.style.display = 'none'; // Ensure close icon is hidden initially
+        burgerIcon.style.display = 'block'; // Ensure burger icon is visible initially
 
-            // Toggle menu and icons with smooth rotation
-            menuToggle.addEventListener('click', () => {
-                if (mobileMenu.style.display === 'block') {
-                    // Close the mobile menu
-                    mobileMenu.style.display = 'none';
+        // Toggle menu and icons with smooth rotation
+        menuToggle.addEventListener('click', () => {
+            if (mobileMenu.style.display === 'block') {
+                // Close the mobile menu
+                mobileMenu.style.display = 'none';
 
-                    // Animate icons
-                    burgerIcon.classList.remove('rotate-out');
-                    burgerIcon.classList.add('rotate-in');
-                    closeIcon.classList.remove('rotate-in');
-                    closeIcon.classList.add('rotate-out');
+                // Animate icons
+                burgerIcon.classList.remove('rotate-out');
+                burgerIcon.classList.add('rotate-in');
+                closeIcon.classList.remove('rotate-in');
+                closeIcon.classList.add('rotate-out');
 
-                    // After rotation animation, swap icon visibility
-                    setTimeout(() => {
-                        burgerIcon.style.display = 'block';
-                        closeIcon.style.display = 'none';
-                    }, 200); // Adjust timing to match your rotation animation duration
-                } else {
-                    // Open the mobile menu
-                    mobileMenu.style.display = 'block';
+                // After rotation animation, swap icon visibility
+                setTimeout(() => {
+                    burgerIcon.style.display = 'block';
+                    closeIcon.style.display = 'none';
+                }, 200); // Adjust timing to match your rotation animation duration
+            } else {
+                // Open the mobile menu
+                mobileMenu.style.display = 'block';
 
-                    // Animate icons
-                    burgerIcon.classList.remove('rotate-in');
-                    burgerIcon.classList.add('rotate-out');
-                    closeIcon.classList.remove('rotate-out');
-                    closeIcon.classList.add('rotate-in');
+                // Animate icons
+                burgerIcon.classList.remove('rotate-in');
+                burgerIcon.classList.add('rotate-out');
+                closeIcon.classList.remove('rotate-out');
+                closeIcon.classList.add('rotate-in');
 
-                    // After rotation animation, swap icon visibility
-                    setTimeout(() => {
-                        burgerIcon.style.display = 'none';
-                        closeIcon.style.display = 'block';
-                    }, 200); // Adjust timing to match your rotation animation duration
-                }
+                // After rotation animation, swap icon visibility
+                setTimeout(() => {
+                    burgerIcon.style.display = 'none';
+                    closeIcon.style.display = 'block';
+                }, 200); // Adjust timing to match your rotation animation duration
+            }
+        });
+
+        // Close menu and reset icons when a link is clicked
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.style.display = 'none';
+
+                // Animate icons
+                burgerIcon.classList.remove('rotate-out');
+                burgerIcon.classList.add('rotate-in');
+                closeIcon.classList.remove('rotate-in');
+                closeIcon.classList.add('rotate-out');
+
+                // After rotation animation, swap icon visibility
+                setTimeout(() => {
+                    burgerIcon.style.display = 'block';
+                    closeIcon.style.display = 'none';
+                }, 200);
             });
-
-            // Close menu and reset icons when a link is clicked
-            document.querySelectorAll('#mobileMenu a').forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.style.display = 'none';
-
-                    // Animate icons
-                    burgerIcon.classList.remove('rotate-out');
-                    burgerIcon.classList.add('rotate-in');
-                    closeIcon.classList.remove('rotate-in');
-                    closeIcon.classList.add('rotate-out');
-
-                    // After rotation animation, swap icon visibility
-                    setTimeout(() => {
-                        burgerIcon.style.display = 'block';
-                        closeIcon.style.display = 'none';
-                    }, 200);
-                });
-            });
+        });
     </script>
 
     <script>
