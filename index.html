@@ -1,0 +1,1942 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zentucky Fried Chicken</title>
+    <link rel="icon" href="favicon.ico" type="image/png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.3/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Montserrat:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #EF4444;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #FFFFFF, #E2E8F0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-blur {
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        .button-glow:hover {
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+        }
+
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .reveal-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slide-up {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .menu-section {
+            position: relative;
+            overflow: hidden;
+            padding: 2rem 0;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .menu-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 0, 0, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .menu-card {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .nav-container {
+            position: relative;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 0.75rem;
+            padding: 0.5rem;
+            display: flex;
+            overflow-x: auto;
+            gap: 1rem;
+        }
+
+        .nav-slider {
+            position: absolute;
+            height: calc(100% - 1rem);
+            top: 0.5rem;
+            left: 0.5rem;
+            background: linear-gradient(to right, rgba(153, 27, 27, 0.5), rgba(127, 29, 29, 0.5));
+            border-bottom: 2px solid rgb(239, 68, 68);
+            border-radius: 0.5rem;
+            transition: transform 0.3s ease, width 0.3s ease;
+        }
+
+        .tab-button {
+            position: relative;
+            padding: 1rem 2rem;
+            color: #9ca3af;
+            font-size: 1.125rem;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .tab-button.active {
+            color: white;
+        }
+
+        .product-container {
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+
+        .product-image {
+            transform: translateY(-15%) translateZ(50px);
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            object-position: center;
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.4));
+            transition: all 0.5s ease;
+        }
+
+
+
+        .info-card {
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.9) 30%, rgba(0, 0, 0, 0.95) 100%);
+            backdrop-filter: blur(10px);
+        }
+
+        #burgers,
+        #drinks,
+        #sides {
+            display: none !important;
+        }
+
+        #burgers.active,
+        #drinks.active,
+        #sides.active {
+            display: grid !important;
+        }
+
+
+
+        .tab-content.active {
+            display: grid !important;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .tab-content.active {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .tab-content.active {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+
+        @keyframes slide-in-left {
+            from {
+                transform: translateX(-100%) rotateY(-15deg);
+
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0) rotateY(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slide-in-down {
+            from {
+                transform: translateY(100%) rotateX(15deg);
+
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0) rotateX(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slide-in-right {
+            from {
+                transform: translateX(100%) rotateY(15deg);
+
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0) rotateY(0deg);
+                opacity: 1;
+            }
+        }
+
+        .menu-card {
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            will-change: transform, box-shadow;
+        }
+
+        .menu-card:hover {
+            transform:
+                translateZ(30px) rotateX(5deg) rotateY(-5deg);
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                0 15px 25px rgba(239, 68, 68, 0.2);
+        }
+
+
+        .info-card {
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-style: preserve-3d;
+            will-change: transform, opacity;
+        }
+
+        .menu-card:hover .info-card {
+            transform:
+                translateZ(20px) rotateX(5deg) translateY(-10px);
+            /* Move the info card down on hover */
+            background: linear-gradient(to bottom,
+                    rgba(0, 0, 0, 0.8) 0%,
+                    rgba(0, 0, 0, 0.95) 30%,
+                    rgba(0, 0, 0, 0.99) 100%);
+        }
+
+
+        .menu-card:hover .info-card {
+            transform:
+                translateZ(20px) rotateX(5deg);
+            background: linear-gradient(to bottom,
+                    rgba(0, 0, 0, 0.8) 0%,
+                    rgba(0, 0, 0, 0.95) 30%,
+                    rgba(0, 0, 0, 0.99) 100%);
+        }
+
+        @keyframes cardFloatAnimation {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(2deg);
+            }
+        }
+
+        .menu-card {
+            animation:
+                cardFloatAnimation 4s ease-in-out infinite;
+            animation-delay: calc(var(--delay) * 0.1s);
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .zoom-hover {
+            transition: transform 0.3s ease;
+        }
+
+        .zoom-hover:hover {
+            transform: scale(1.05);
+        }
+
+        .glow {
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .glow:hover {
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+        }
+
+        .phone-mockup {
+            position: relative;
+            border-radius: 2rem;
+            padding: 1rem;
+        }
+
+        .app-icon {
+            transition: all 0.3s ease;
+        }
+
+        .app-icon:hover {
+            transform: translateY(-5px);
+        }
+
+        .burger svg {
+            color: white;
+        }
+
+        .burger svg {
+            color: white;
+        }
+
+        .mobile-menu {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .burger {
+            display: flex;
+            align-items: center;
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .testimonial-card {
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .star {
+            display: inline-block;
+            animation: twinkle 1.5s ease-in-out infinite;
+        }
+
+        .star:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .star:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .star:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .star:nth-child(4) {
+            animation-delay: 0.9s;
+        }
+
+        .star:nth-child(5) {
+            animation-delay: 1.2s;
+        }
+
+        .customer-image {
+            transition: transform 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .testimonial-card:hover .customer-image {
+            transform: scale(1.1);
+        }
+
+        .rating-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+        }
+
+        .hours-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hours-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .hours-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            animation: shimmer 5s infinite linear;
+        }
+
+        .time-row {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .time-row:hover {
+            transform: translateX(10px);
+        }
+
+        .day {
+            position: relative;
+            display: inline-block;
+        }
+
+        .day::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: currentColor;
+            transition: width 0.3s ease;
+        }
+
+        .time-row:hover .day::after {
+            width: 100%;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #10B981;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        .status-text {
+            font-size: 0.875rem;
+            color: #10B981;
+            font-weight: 500;
+        }
+
+        .closed .status-dot {
+            background-color: #EF4444;
+        }
+
+        .closed .status-text {
+            color: #EF4444;
+        }
+
+        .clock-icon {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 16px;
+            opacity: 0.8;
+        }
+
+        body {
+            background: linear-gradient(135deg, #000000 0%, #1f0000 100%) !important;
+        }
+
+        .footer-container {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-section {
+            transition: transform 0.3s ease;
+        }
+
+        .footer-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .footer-link {
+            position: relative;
+            display: inline-block;
+            transition: all 0.3s ease;
+            padding: 4px 0;
+        }
+
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background: #ffffff;
+            transition: width 0.3s ease;
+        }
+
+        .footer-link:hover::after {
+            width: 100%;
+        }
+
+        .social-icons a {
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .social-icons a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            transform: translateX(5px);
+        }
+
+        .copyright {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .copyright::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.1),
+                    transparent);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            ;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo img {
+            max-width: 300%;
+            height: auto;
+        }
+
+        #menu-label {
+            margin-left: 570px;
+        }
+
+        #feedback-label {
+            margin-left: 550px;
+        }
+
+        .gradient-button {
+            background: linear-gradient(to right, rgba(153, 27, 27, 0.5), rgba(127, 29, 29, 0.5));
+            border: none;
+            border-radius: 35px;
+            /* Rounded corners */
+            color: white;
+            padding: 12px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .gradient-button:hover,
+        .gradient-button:active {
+            transform: scale(1.1);
+            /* Zoom effect */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* Add a shadow for a more pronounced effect */
+        }
+
+        #mobileMenu {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .rotate-in {
+        transform: rotate(0deg);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .rotate-out {
+        transform: rotate(90deg);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+
+
+
+
+
+        @media (max-width: 599px) {
+            #menu {
+                padding-bottom: 10px;
+
+                ::-webkit-scrollbar {
+                    background: transparent;
+                }
+            }
+
+            #menu-label {
+                margin-left: 140px;
+            }
+
+            #phone-content {
+                margin-left: 30px;
+            }
+
+            #feedback-label {
+                margin-left: 130px;
+            }
+
+            #app-label {
+                margin-left: 148px;
+            }
+
+            #footer-logo {
+                margin-left: 270px;
+            }
+
+
+            .footer-section:nth-child(2) {
+                display: none;
+            }
+
+            .footer-section:nth-child(3) {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-section li:active {
+                transform: scale(1.1);
+                text-decoration: underline;
+                text-decoration-color: white;
+                line-height: 2;
+                transition: transform 1s ease-in-out;
+            }
+
+            #footer-logo:active {
+                transform: scale(1.2);
+                /* Zoom in more on touch */
+                transition: transform 0.2s ease-in-out;
+            }
+
+            #view {
+                margin-right: 20px;
+                margin-top: 1000px;
+            }
+
+            #broasted {
+                margin-left: 200px;
+            }
+        }
+
+        @media (min-width: 600px) and (max-width: 1023px){
+            #menu-label{
+                margin-left: 360px;
+            }
+
+            #feedback-label{
+                margin-left: 340px;
+            }
+
+            #footer-logo{
+                margin-left: 90px;
+            }
+
+            #view{
+                margin-top: 50px;
+            }
+
+            #app-label{
+                margin-left: 380px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300">
+        <div id="nav-container" class="transition-all duration-300 w-full glass-nav">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-20">
+                    <div class="flex items-center">
+                        <img src="zentucky-transparent-logo.png" alt="ZFC Logo" class="h-10 w-auto">
+                    </div>
+                    <div class="hidden md:flex items-center space-x-12">
+                        <a href="#hero" class="nav-link transition-colors text-sm font-medium text-white">Home</a>
+                        <a href="#about" class="nav-link transition-colors text-sm font-medium text-white">About Us</a>
+                        <a href="#menu" class="nav-link transition-colors text-sm font-medium text-white">Menu</a>
+                        <a href="#feedback" class="nav-link transition-colors text-sm font-medium text-white">Review</a>
+                        <a href="#open" class="nav-link transition-colors text-sm font-medium text-white">Timings</a>
+                        <a href="#order"
+                            class="bg-red-600 text-white px-6 py-2.5 rounded-full hover:bg-red-700 transition-all transform hover:scale-105 text-sm font-medium">
+                            Order Now
+                        </a>
+                    </div>
+                    <div id="menuToggle" class="burger md:hidden flex items-center cursor-pointer">
+                        <i id="burgerIcon" class="fas fa-bars text-white text-2xl"></i>
+                        <i id="closeIcon" class="fas fa-times text-white text-2xl hidden"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Mobile Menu -->
+        <div id="mobileMenu"
+            class="hidden mobile-menu md:hidden bg-white bg-opacity-90 backdrop-blur-lg border-t border-gray-100 w-full">
+            <div class="px-4 py-6 space-y-4">
+                <a href="#hero" class="block text-white hover:text-red-600 transition-colors font-medium">Home</a>
+                <a href="#about" class="block text-white hover:text-red-600 transition-colors font-medium">About Us</a>
+                <a href="#menu" class="block text-white hover:text-red-600 transition-colors font-medium">Menu</a>
+                <a href="#feedback" class="block text-white hover:text-red-600 transition-colors font-medium">Review</a>
+                <a href="#open" class="block text-white hover:text-red-600 transition-colors font-medium">Timings</a>
+                <a href="#order"
+                    class="block bg-red-600 text-white px-6 py-3 rounded-full text-center hover:bg-red-700 transition-all transform hover:scale-105 font-medium">
+                    Order Now
+                </a>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+
+
+
+    <!-- Enhanced Hero Section -->
+    <section id="hero" class="relative h-screen overflow-hidden">
+        <div class="absolute inset-0">
+            <video id="heroVideo" class="w-full h-full object-cover" autoplay muted playsinline loop>
+                <source src="hero.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
+        </div>
+        <div class="absolute inset-0">
+            <div class="h-full flex items-center justify-center px-4">
+                <div class="text-center max-w-4xl mx-auto" id="hero-content">
+                    <span class="inline-block text-red-500 font-semibold mb-4 tracking-wider text-sm" id="hero-label">
+                        WELCOME TO ZENTUCKY
+                    </span>
+                    <h1 class="text-7xl md:text-8xl font-bold mb-6 leading-tight tracking gradient-text"
+                        id="hero-title">
+                        Crispy Perfection Redefined
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed"
+                        id="hero-subtitle">
+                        Experience our legendary secret recipe, crafted to perfection and served with passion
+                    </p>
+                    <div class="space-x-6" id="hero-buttons">
+                        <a href="#order"
+                            class="inline-block bg-red-600 text-white px-8 py-4 rounded-full hover:bg-red-700 transition-all transform hover:scale-105 hover:shadow-lg button-glow font-medium">
+                            Order Now
+                        </a>
+                        <a href="#menu"
+                            class="inline-block bg-white/10 text-white border border-white/20 px-8 py-4 rounded-full hover:bg-white/20 transition-all transform hover:scale-105 hover:shadow-lg backdrop-blur-sm font-medium">
+                            Explore Menu
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+                <!-- Left Content -->
+                <div class="reveal-on-scroll text-center lg:text-left">
+                    <span class="inline-block text-red-500 font-semibold mb-4 tracking-wider text-sm" id="about-label">
+                        &nbsp;&nbsp;About Us
+                    </span>
+                    <h2 class="text-5xl font-extrabold tracking-tight text-white mb-6">Our Story</h2>
+                    <p class="text-lg text-gray-300 leading-relaxed mb-8 mx-auto lg:mx-0 max-w-prose">
+                        Zentucky Fried Chicken was born from a passion for perfect fried chicken. Our secret blend of
+                        herbs and spices, combined with our unique cooking process, creates the most tender and crispy
+                        chicken you've ever tasted.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6 mt-8 max-w-md mx-auto lg:mx-0">
+                        <div
+                            class="bg-white bg-opacity-10 backdrop-blur-md p-6 shadow-lg rounded-xl transform transition-transform hover:scale-105 text-center">
+                            <h3 class="text-3xl font-bold text-white counter" data-target="20">0</h3>
+                            <p class="mt-2 text-gray-300">Years of Experience</p>
+                        </div>
+                        <div
+                            class="bg-white bg-opacity-10 backdrop-blur-md p-6 shadow-lg rounded-xl transform transition-transform hover:scale-105 text-center">
+                            <h3 class="text-3xl font-bold text-white counter" data-target="50">0</h3>
+                            <p class="mt-2 text-gray-300">Locations</p>
+                        </div>
+                        <div id="counter-end-marker"></div>
+                    </div>
+                </div>
+
+                <!-- Right Content -->
+                <div class="mt-10 lg:mt-0 reveal-on-scroll flex justify-center lg:block">
+                    <div class="relative group max-w-md lg:max-w-none w-full">
+                        <img src="about1.png" alt="Restaurant Interior"
+                            class="rounded-xl shadow-xl transform transition-all duration-500 ease-in-out group-hover:scale-105 group-hover:translate-y-[-10px] w-full h-auto object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section id="menu" class="menu-section py-10 min-h-screen">
+        <!-- Category Tabs -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+            <span class="inline-block text-red-500 font-semibold mb-4 tracking-wider text-sm" id="menu-label">
+                Products
+            </span>
+            <br>
+            <h2 class="text-4xl font-bold text-center text-white mb-8" style="font-family: 'Inter', sans-serif;">
+                Our Menu
+            </h2>
+
+            <div class="nav-container flex justify-center">
+                <div class="nav-slider"></div>
+                <button class="tab-button active" data-tab="chicken" id="broasted">Broasted</button>
+                <button class="tab-button" data-tab="burgers">Burgers</button>
+                <button class="tab-button" data-tab="drinks">Drinks</button>
+                <button class="tab-button" data-tab="sides">Sides</button>
+            </div>
+
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 max-h-screen">
+            <!-- Chicken Buckets Tab -->
+            <div id="chicken" class="tab-content active grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Menu Card 1 -->
+                <div class="menu-card relative min-h-[600px] md:h-[600px]" data-aos="fade-up">
+                    <div class="product-container relative h-full rounded-3xl overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center overflow-visible"
+                            style="transform-style: preserve-3d;">
+                            <img src="bucket1.png" alt="Royale Chicken" class="product-image">
+                        </div>
+                        <div class="info-card absolute bottom-0 left-0 right-0 rounded-3xl p-8">
+                            <h3 class="text-3xl font-bold text-white mb-3">Royale Chicken</h3>
+                            <p class="text-gray-300 text-lg mb-6">8 pcs signature fried chicken with premium seasoning
+                            </p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-red-400 text-3xl font-bold">$15.30</span>
+                                <button
+                                    class="px-8 py-3 bg-red-900/80 hover:bg-red-800 text-white rounded-xl transition-all duration-300 text-lg">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Card 2 -->
+                <div class="menu-card relative min-h-[600px] md:h-[600px]" data-aos="fade-up" data-aos-delay="100">
+                    <div class="product-container relative h-full rounded-3xl overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center"
+                            style="transform-style: preserve-3d;">
+                            <img src="bucket2.png" alt="Gourmet Delight" class="product-image">
+                        </div>
+                        <div class="info-card absolute bottom-0 left-0 right-0 rounded-3xl p-8">
+                            <h3 class="text-3xl font-bold text-white mb-3">Gourmet Delight</h3>
+                            <p class="text-gray-300 text-lg mb-6">6 pcs crispy chicken with special herbs blend</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-red-400 text-3xl font-bold">$10.00</span>
+                                <button
+                                    class="px-8 py-3 bg-red-900/80 hover:bg-red-800 text-white rounded-xl transition-all duration-300 text-lg">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Card 3 -->
+                <div class="menu-card relative min-h-[600px] md:h-[600px]" data-aos="fade-up" data-aos-delay="200">
+                    <div class="product-container relative h-full rounded-3xl overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center"
+                            style="transform-style: preserve-3d;">
+                            <img src="bucket3.png" alt="Elegance Chicken" class="product-image">
+                        </div>
+                        <div class="info-card absolute bottom-0 left-0 right-0 rounded-3xl p-8">
+                            <h3 class="text-3xl font-bold text-white mb-3">Elegance Chicken</h3>
+                            <p class="text-gray-300 text-lg mb-6">10 pcs premium chicken with signature sides</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-red-400 text-3xl font-bold">$20.50</span>
+                                <button
+                                    class="px-8 py-3 bg-red-900/80 hover:bg-red-800 text-white rounded-xl transition-all duration-300 text-lg">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Burgers Tab -->
+            <div id="burgers" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Menu Card 1 -->
+                <div class="menu-card relative min-h-[600px] md:h-[600px]" data-aos="fade-up">
+                    <div class="product-container relative h-full rounded-3xl overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center"
+                            style="transform-style: preserve-3d;">
+                            <img src="burger1.png" alt="Classic Beef Burger" class="product-image">
+                        </div>
+                        <div class="info-card absolute bottom-0 left-0 right-0 rounded-3xl p-8">
+                            <h3 class="text-3xl font-bold text-white mb-3">Classic Beef Burger</h3>
+                            <p class="text-gray-300 text-lg mb-6">Juicy beef patty with lettuce, tomato, and special
+                                sauce
+                            </p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-red-400 text-3xl font-bold">$8.50</span>
+                                <button
+                                    class="px-8 py-3 bg-red-900/80 hover:bg-red-800 text-white rounded-xl transition-all duration-300 text-lg">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Card 2 -->
+                <div class="menu-card relative min-h-[600px] md:h-[600px]" data-aos="fade-up" data-aos-delay="100">
+                    <div class="product-container relative h-full rounded-3xl overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center"
+                            style="transform-style: preserve-3d;">
+                            <img src="burger2.png" alt="Spicy Chicken Burger" class="product-image">
+                        </div>
+                        <div class="info-card absolute bottom-0 left-0 right-0 rounded-3xl p-8">
+                            <h3 class="text-3xl font-bold text-white mb-3">Spicy Chicken Burger</h3>
+                            <p class="text-gray-300 text-lg mb-6">Spicy fried chicken with pickles and mayo</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-red-400 text-3xl font-bold">$7.50</span>
+                                <button
+                                    class="px-8 py-3 bg-red-900/80 hover:bg-red-800 text-white rounded-xl transition-all duration-300 text-lg">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Card 3 -->
+                <div class="menu-card relative min-h-[600px] md:h-[600px]" data-aos="fade-up" data-aos-delay="200">
+                    <div class="product-container relative h-full rounded-3xl overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center"
+                            style="transform-style: preserve-3d;">
+                            <img src="burger3.png" alt="Veggie Delight Burger" class="product-image">
+                        </div>
+                        <div class="info-card absolute bottom-0 left-0 right-0 rounded-3xl p-8">
+                            <h3 class="text-3xl font-bold text-white mb-3">Veggie Delight Burger</h3>
+                            <p class="text-gray-300 text-lg mb-6">Grilled veggie patty with avocado and fresh greens</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-red-400 text-3xl font-bold">$6.50</span>
+                                <button
+                                    class="px-8 py-3 bg-red-900/80 hover:bg-red-800 text-white rounded-xl transition-all duration-300 text-lg">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Drinks Tab -->
+            <div id="drinks" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Menu Card 1 -->
+                <div class="menu-card relative min-h-[600px] md:h-[600px]" data-aos="fade-up">
+                    <div class="product-container relative h-full rounded-3xl overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center"
+                            style="transform-style: preserve-3d;">
+                            <img src="drinks1.png" alt="Classic Cola" class="product-image">
+                        </div>
+                        <div class="info-card absolute bottom-0 left-0 right-0 rounded-3xl p-8">
+                            <h3 class="text-3xl font-bold text-white mb-3">Classic Cola</h3>
+                            <p class="text-gray-300 text-lg mb-6">Refreshing cola served chilled</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-red-400 text-3xl font-bold">$2.00</span>
+                                <button
+                                    class="px-8 py-3 bg-red-900/80 hover:bg-red-800 text-white rounded-xl transition-all duration-300 text-lg">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Card 2 -->
+                <div class="menu-card relative min-h-[600px] md:h-[600px]]" data-aos="fade-up" data-aos-delay="100">
+                    <div class="product-container relative h-full rounded-3xl overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center"
+                            style="transform-style: preserve-3d;">
+                            <img src="drinks2.png" alt="Lemonade Splash" class="product-image">
+                        </div>
+                        <div class="info-card absolute bottom-0 left-0 right-0 rounded-3xl p-8">
+                            <h3 class="text-3xl font-bold text-white mb-3">Lemonade Splash</h3>
+                            <p class="text-gray-300 text-lg mb-6">Freshly squeezed lemonade with a hint of mint</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-red-400 text-3xl font-bold">$2.50</span>
+                                <button
+                                    class="px-8 py-3 bg-red-900/80 hover:bg-red-800 text-white rounded-xl transition-all duration-300 text-lg">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Card 3 -->
+                <div class="menu-card relative min-h-[600px] md:h-[600px]" data-aos="fade-up" data-aos-delay="200">
+                    <div class="product-container relative h-full rounded-3xl overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center"
+                            style="transform-style: preserve-3d;">
+                            <img src="drinks3.png" alt="Iced Tea" class="product-image">
+                        </div>
+                        <div class="info-card absolute bottom-0 left-0 right-0 rounded-3xl p-8">
+                            <h3 class="text-3xl font-bold text-white mb-3">Iced Tea</h3>
+                            <p class="text-gray-300 text-lg mb-6">Brewed tea served over ice with lemon</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-red-400 text-3xl font-bold">$2.00</span>
+                                <button
+                                    class="px-8 py-3 bg-red-900/80 hover:bg-red-800 text-white rounded-xl transition-all duration-300 text-lg">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sides Tab -->
+            <div id="sides" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Menu Card 1 -->
+                <div class="menu-card relative min-h-[600px] md:h-[600px]" data-aos="fade-up">
+                    <div class="product-container relative h-full rounded-3xl overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center"
+                            style="transform-style: preserve-3d;">
+                            <img src="side1.png" alt="French Fries" class="product-image">
+                        </div>
+                        <div class="info-card absolute bottom-0 left-0 right-0 rounded-3xl p-8">
+                            <h3 class="text-3xl font-bold text-white mb-3">French Fries</h3>
+                            <p class="text-gray-300 text-lg mb-6">Crispy golden fries with a side of ketchup</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-red-400 text-3xl font-bold">$3.00</span>
+                                <button
+                                    class="px-8 py-3 bg-red-900/80 hover:bg-red-800 text-white rounded-xl transition-all duration-300 text-lg">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Card 2 -->
+                <div class="menu-card relative min-h-[600px] md:h-[600px]" data-aos="fade-up" data-aos-delay="100">
+                    <div class="product-container relative h-full rounded-3xl overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center"
+                            style="transform-style: preserve-3d;">
+                            <img src="side2.png" alt="Onion Rings" class="product-image">
+                        </div>
+                        <div class="info-card absolute bottom-0 left-0 right-0 rounded-3xl p-8">
+                            <h3 class="text-3xl font-bold text-white mb-3">Onion Rings</h3>
+                            <p class="text-gray-300 text-lg mb-6">Battered onion rings fried to perfection</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-red-400 text-3xl font-bold">$3.50</span>
+                                <button
+                                    class="px-8 py-3 bg-red-900/80 hover:bg-red-800 text-white rounded-xl transition-all duration-300 text-lg">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Card 3 -->
+                <div class="menu-card relative min-h-[600px] md:h-[600px]" data-aos="fade-up" data-aos-delay="200">
+                    <div class="product-container relative h-full rounded-3xl overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center"
+                            style="transform-style: preserve-3d;">
+                            <img src="side3.png" alt="Coleslaw" class="product-image">
+                        </div>
+                        <div class="info-card absolute bottom-0 left-0 right-0 rounded-3xl p-8">
+                            <h3 class="text-3xl font-bold text-white mb-3">Coleslaw</h3>
+                            <p class="text-gray-300 text-lg mb-6">Freshly made coleslaw with a tangy dressing</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-red-400 text-3xl font-bold">$2.50</span>
+                                <button
+                                    class="px-8 py-3 bg-red-900/80 hover:bg-red-800 text-white rounded-xl transition-all duration-300 text-lg">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <center><button class="gradient-button" id="view">View More</button></center>
+    </section>
+
+    <!-- Download Apps Section -->
+    <section id="apps" class="py-20 gradient-bg text-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-28 items-center">
+                <div id="text-content">
+                    <span
+                        class="inline-block text-red-500 font-semibold mb-4 tracking-wider text-sm md:text-center lg:text-left"
+                        id="app-label">
+                        &nbsp;App
+                    </span>
+                    <div
+                        class="flex flex-col items-center text-center md:items-center md:mx-auto lg:items-start lg:mx-0 lg:text-left">
+                        <h2 class="text-4xl font-bold mb-6">
+                            <span class="bg-clip-text text-transparent bg-white">
+                                Experience Mobile Freedom
+                            </span>
+                        </h2>
+                        <p class="text-lg text-gray-300 mb-8">
+                            Order faster, earn rewards, and get exclusive deals with our mobile app.
+                            Join thousands of happy users today!
+                        </p>
+                    </div>
+                    <div
+                        class="flex flex-col sm:flex-row md:justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#"
+                            class="group glow bg-white text-black px-6 py-4 rounded-xl flex items-center justify-center space-x-3 hover:bg-gray-100 transition-all zoom-hover">
+                            <i class="fab fa-app-store text-2xl app-icon group-hover:text-blue-500"></i>
+                            <div class="flex flex-col">
+                                <span class="text-xs">Download on the</span>
+                                <span class="font-bold">App Store</span>
+                            </div>
+                        </a>
+                        <a href="#"
+                            class="group glow bg-white text-black px-6 py-4 rounded-xl flex items-center justify-center space-x-3 hover:bg-gray-100 transition-all zoom-hover">
+                            <i class="fab fa-google-play text-2xl app-icon group-hover:text-green-400"></i>
+                            <div class="flex flex-col">
+                                <span class="text-xs">Get it on</span>
+                                <span class="font-bold">Play Store</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="mt-8 flex items-center md:justify-center lg:justify-start space-x-4">
+                        <div class="flex -space-x-2">
+                            <img src="client1.jpg" class="w-8 h-8 rounded-full border-2 border-white" alt="User">
+                            <img src="client2.jpg" class="w-8 h-8 rounded-full border-2 border-white" alt="User">
+                            <img src="client3.png" class="w-8 h-8 rounded-full border-2 border-white" alt="User">
+                        </div>
+                        <p class="text-sm text-gray-400">Join 10k+ happy users</p>
+                    </div>
+                </div>
+                <div class="flex space-x-4 mt-10 lg:mt-0 md:justify-center lg:justify-start" id="phone-content">
+                    <div class="phone-mockup floating h-64 md:h-80 lg:h-96 bg-none">
+                        <img src="iphone.png" alt="app store" class="rounded-3xl h-full">
+                    </div>
+                    <div class="new-element floating h-64 md:h-80 lg:h-96 bg-none">
+                        <img src="samsung.png" alt="play store" class="rounded-3xl h-full">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="feedback" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <span class="inline-block text-red-500 font-semibold mb-4 tracking-wider text-sm"
+                id="feedback-label">Testimonial</span>
+            <h2 class="text-4xl font-bold text-center text-white mb-12">
+                What Our Customers Say
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 testimonial-container">
+                <div class="testimonial-card p-8 rounded-2xl">
+                    <div class="flex items-center mb-4">
+                        <img src="client4.jpg" alt="Customer" class="customer-image w-10 h-10 rounded-full">
+                        <div class="ml-4">
+                            <h4 class="font-bold text-white">John Doe</h4>
+                            <div class="rating-container">
+                                <span class="star text-yellow-400">★</span>
+                                <span class="star text-yellow-400">★</span>
+                                <span class="star text-yellow-400">★</span>
+                                <span class="star text-yellow-400">★</span>
+                                <span class="star text-yellow-400">★</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-200">"Best fried chicken in town! The crispy texture and juicy meat are
+                        perfect."
+                    </p>
+                </div>
+                <div class="testimonial-card p-8 rounded-2xl">
+                    <div class="flex items-center mb-4">
+                        <img src="client5.png" alt="Customer" class="customer-image w-10 h-10 rounded-full">
+                        <div class="ml-4">
+                            <h4 class="font-bold text-white">Mike Johnson</h4>
+                            <div class="rating-container">
+                                <span class="star text-yellow-400">★</span>
+                                <span class="star text-yellow-400">★</span>
+                                <span class="star text-yellow-400">★</span>
+                                <span class="star text-yellow-400">★</span>
+                                <span class="star text-yellow-400">★</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-200">"The family bucket is our weekend tradition. Amazing value and taste!"</p>
+                </div>
+                <div class="testimonial-card p-8 rounded-2xl">
+                    <div class="flex items-center mb-4">
+                        <img src="client6.png" alt="Customer" class="customer-image w-10 h-10 rounded-full">
+                        <div class="ml-4">
+                            <h4 class="font-bold text-white">Sarah Smith</h4>
+                            <div class="rating-container">
+                                <span class="star text-yellow-400">★</span>
+                                <span class="star text-yellow-400">★</span>
+                                <span class="star text-yellow-400">★</span>
+                                <span class="star text-yellow-400">★</span>
+                                <span class="star text-yellow-400">★</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-200">"Quick delivery and the chicken was still hot and crispy. Excellent
+                        service!"
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="open" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <span class="inline-block text-red-500 font-semibold mb-4 tracking-wider text-sm" id="open-label">
+                    Available Timing
+                </span>
+                <h2 class="text-4xl font-bold text-white mb-12">Opening Hours</h2>
+                <div class="inline-block hours-card rounded-2xl p-8">
+                    <svg class="clock-icon mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" stroke="#ffffff" />
+                        <polyline points="12 6 12 12 16 14" stroke="#ffffff" />
+                    </svg>
+                    <div class="status-indicator" id="statusIndicator">
+                        <div class="status-dot"></div>
+                        <span class="status-text">We're Open</span>
+                    </div>
+                    <div class="space-y-6 p-4 md:p-0">
+                        <div class="grid grid-cols-2 gap-x-12 gap-y-6">
+                            <div class="time-row text-right whitespace-nowrap">
+                                <span class="day text-white font-bold">Monday - Friday</span>
+                            </div>
+                            <div class="time-row text-left text-gray-300">10:00 AM - 10:00 PM</div>
+
+                            <div class="time-row text-right">
+                                <span class="day text-white font-bold">Saturday</span>
+                            </div>
+                            <div class="time-row text-left text-gray-300">11:00 AM - 11:00 PM</div>
+
+                            <div class="time-row text-right">
+                                <span class="day text-white font-bold">Sunday</span>
+                            </div>
+                            <div class="time-row text-left text-gray-300">11:00 AM - 9:00 PM</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-container py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 text-center md:text-left">
+                <div class="footer-section">
+                    <div class="logo-container">
+                        <div class="logo">
+                            <img src="zentucky-transparent-logo.png" alt="ZFC Logo" id="footer-logo">
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mt-4">Crispy, juicy, and simply delicious.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="font-bold mb-6 text-white">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#hero" class="footer-link text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="#menu" class="footer-link text-gray-400 hover:text-white">Menu</a></li>
+                        <li><a href="#open" class="footer-link text-gray-400 hover:text-white">Timings</a></li>
+                        <li><a href="#about" class="footer-link text-gray-400 hover:text-white">About Us</a></li>
+                        
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="font-bold mb-6 text-white">Contact</h4>
+                    <ul class="space-y-1">
+                        <li class="contact-item text-gray-400">
+                            <i class="fas fa-envelope w-4"></i>
+                            <span>info@zfc.com</span>
+                        </li>
+                        <li class="contact-item text-gray-400">
+                            <i class="fas fa-phone w-4"></i>
+                            <span>(555) 123-4567</span>
+                        </li>
+                        <li class="contact-item text-gray-400">
+                            <i class="fas fa-map-marker-alt w-4"></i>
+                            <span>123 Chicken Street</span>
+                        </li>
+                        <li class="contact-item text-gray-400">
+                            <i class="fas fa-city w-4"></i>
+                            <span>New York, NY 10001</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="font-bold mb-6 text-white">Follow Us</h4>
+                    <div class="social-icons flex justify-center md:justify-start space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="copyright mt-16 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Zentucky Fried Chicken. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const burger = document.querySelector('.burger');
+            const mobileMenu = document.querySelector('.mobile-menu');
+
+            burger.addEventListener('click', function () {
+                mobileMenu.classList.toggle('hidden');
+            });
+        });
+    </script>
+
+    <script>
+        // Get DOM elements
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const burgerIcon = document.getElementById('burgerIcon');
+            const closeIcon = document.getElementById('closeIcon');
+
+            // Initial state setup
+            closeIcon.style.display = 'none'; // Ensure close icon is hidden initially
+            burgerIcon.style.display = 'block'; // Ensure burger icon is visible initially
+
+            // Toggle menu and icons with smooth rotation
+            menuToggle.addEventListener('click', () => {
+                if (mobileMenu.style.display === 'block') {
+                    // Close the mobile menu
+                    mobileMenu.style.display = 'none';
+
+                    // Animate icons
+                    burgerIcon.classList.remove('rotate-out');
+                    burgerIcon.classList.add('rotate-in');
+                    closeIcon.classList.remove('rotate-in');
+                    closeIcon.classList.add('rotate-out');
+
+                    // After rotation animation, swap icon visibility
+                    setTimeout(() => {
+                        burgerIcon.style.display = 'block';
+                        closeIcon.style.display = 'none';
+                    }, 200); // Adjust timing to match your rotation animation duration
+                } else {
+                    // Open the mobile menu
+                    mobileMenu.style.display = 'block';
+
+                    // Animate icons
+                    burgerIcon.classList.remove('rotate-in');
+                    burgerIcon.classList.add('rotate-out');
+                    closeIcon.classList.remove('rotate-out');
+                    closeIcon.classList.add('rotate-in');
+
+                    // After rotation animation, swap icon visibility
+                    setTimeout(() => {
+                        burgerIcon.style.display = 'none';
+                        closeIcon.style.display = 'block';
+                    }, 200); // Adjust timing to match your rotation animation duration
+                }
+            });
+
+            // Close menu and reset icons when a link is clicked
+            document.querySelectorAll('#mobileMenu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.style.display = 'none';
+
+                    // Animate icons
+                    burgerIcon.classList.remove('rotate-out');
+                    burgerIcon.classList.add('rotate-in');
+                    closeIcon.classList.remove('rotate-in');
+                    closeIcon.classList.add('rotate-out');
+
+                    // After rotation animation, swap icon visibility
+                    setTimeout(() => {
+                        burgerIcon.style.display = 'block';
+                        closeIcon.style.display = 'none';
+                    }, 200);
+                });
+            });
+    </script>
+
+    <script>
+
+        gsap.registerPlugin(ScrollTrigger);
+
+
+        const heroTL = gsap.timeline({ defaults: { ease: "power4.out" } });
+
+        heroTL
+            .from("#hero-label", {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                delay: 0.5
+            })
+            .from("#hero-title", {
+                y: 100,
+                opacity: 0,
+                duration: 1.2,
+                delay: -0.8
+            })
+            .from("#hero-subtitle", {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                delay: -0.8
+            })
+            .from("#hero-buttons", {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                delay: -0.8
+            });
+
+
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('glass-nav');
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('glass-nav');
+                nav.classList.remove('shadow-lg');
+            }
+        });
+    </script>
+
+
+    <script>
+
+        document.addEventListener("scroll", function () {
+            document.querySelectorAll(".reveal-on-scroll").forEach((element) => {
+                const rect = element.getBoundingClientRect();
+
+                if (rect.top < window.innerHeight) {
+                    element.classList.add("visible");
+                }
+            });
+        });
+
+    </script>
+
+    <script>
+
+        function animateCounters() {
+            const counters = document.querySelectorAll(".counter");
+
+            counters.forEach((counter) => {
+                const target = +counter.getAttribute("data-target");
+                const updateCount = () => {
+                    const current = +counter.innerText.replace('+', '');
+                    const increment = target / 200; // Adjust the increment value to slow down the count
+
+                    if (current < target) {
+                        counter.innerText = Math.ceil(current + increment);
+                        setTimeout(updateCount, 70); // Adjust the delay to slow down the count
+                    } else {
+                        counter.innerText = target + '+';
+                    }
+                };
+                updateCount();
+            });
+        }
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        animateCounters();
+                        observer.disconnect();
+                    }
+                });
+            },
+            { threshold: 1.0 } // Ensure the marker is fully visible
+        );
+
+        // Observe the marker element
+        const marker = document.querySelector('#counter-end-marker');
+        observer.observe(marker);
+
+    </script>
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabContents = document.querySelectorAll('.tab-content');
+
+
+            tabContents.forEach(content => {
+                const cards = content.querySelectorAll('.menu-card');
+
+                cards.forEach((card, index) => {
+                    if (index === 0) {
+                        card.style.animation = "slide-in-left 1s ease-out";
+                    } else if (index === 1) {
+                        card.style.animation = "slide-in-down 1s ease-out";
+                    } else if (index === 2) {
+                        card.style.animation = "slide-in-right 1s ease-out";
+                    }
+                });
+
+                // Set opacity to 1 after animation (optional cleanup)
+                content.addEventListener('animationend', () => {
+                    cards.forEach(card => {
+                        card.style.opacity = 1;
+                        card.style.animation = 'none';
+                    });
+                });
+            });
+
+            // Handle tab switching
+            const tabs = document.querySelectorAll('.tab-button');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    const target = document.getElementById(tab.getAttribute('data-tab'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    target.classList.add('active');
+
+                    // Trigger animations for the newly active tab
+                    const activeCards = target.querySelectorAll('.menu-card');
+                    activeCards.forEach((card, index) => {
+                        if (index === 0) {
+                            card.style.animation = "slide-in-left 1s ease-out";
+                        } else if (index === 1) {
+                            card.style.animation = "slide-in-down 1s ease-out";
+                        } else if (index === 2) {
+                            card.style.animation = "slide-in-right 1s ease-out";
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navContainer = document.querySelector('.nav-container');
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const navSlider = document.querySelector('.nav-slider');
+
+            function updateSlider(targetButton) {
+                const containerWidth = navContainer.offsetWidth;
+                const buttonWidth = targetButton.offsetWidth;
+                const buttonLeft = targetButton.offsetLeft;
+
+                // Update slider position
+                navSlider.style.transform = `translateX(${buttonLeft}px)`;
+                navSlider.style.width = `${buttonWidth}px`;
+
+                // Center the button on mobile with offset adjustment
+                if (window.innerWidth < 768) {
+                    const scrollPosition = buttonLeft - (containerWidth / 2) + (buttonWidth / 2);
+                    navContainer.scrollTo({
+                        left: Math.max(0, scrollPosition),
+                        behavior: 'smooth'
+                    });
+                }
+            }
+
+            function switchTab(e) {
+                const targetTab = e.target.getAttribute('data-tab');
+
+                // Hide all tab contents first
+                tabContents.forEach(content => {
+                    content.style.display = 'none';
+                });
+
+                // Show target tab content
+                const targetContent = document.getElementById(targetTab);
+                targetContent.style.display = 'grid';
+
+                // Update active states
+                tabButtons.forEach(button => {
+                    button.classList.remove('active');
+                });
+
+                e.target.classList.add('active');
+                updateSlider(e.target);
+            }
+
+            // Initialize
+            tabButtons.forEach(button => {
+                button.addEventListener('click', switchTab);
+            });
+
+            // Set initial state
+            const activeButton = document.querySelector('.tab-button.active');
+            if (activeButton) {
+                // Show initial tab content
+                const initialTab = activeButton.getAttribute('data-tab');
+                tabContents.forEach(content => {
+                    content.style.display = 'none';
+                });
+                document.getElementById(initialTab).style.display = 'grid';
+
+                // Center the initial tab on mobile
+                if (window.innerWidth < 768) {
+                    setTimeout(() => updateSlider(activeButton), 100);
+                } else {
+                    updateSlider(activeButton);
+                }
+            }
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                const activeButton = document.querySelector('.tab-button.active');
+                if (activeButton) updateSlider(activeButton);
+            });
+        });
+
+
+        // 3D Card Effect
+        document.querySelectorAll('.menu-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+
+                const container = card.querySelector('.product-container');
+                container.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+                const image = card.querySelector('.product-image');
+                image.style.transform = `translateY(-30%) translateZ(70px) rotateX(${-rotateX * 0.5}deg) rotateY(${-rotateY * 0.5}deg)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                const container = card.querySelector('.product-container');
+                container.style.transform = 'rotateX(0) rotateY(0)';
+
+                const image = card.querySelector('.product-image');
+                image.style.transform = 'translateY(-15%) translateZ(50px)';
+            });
+        });
+
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+    </script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Detect screen size and dynamically update on resize
+        const mediaQuery = window.matchMedia("(max-width: 768px)");
+
+        // Adjust animation settings based on screen size
+        const animationSettings = {
+            duration: mediaQuery.matches ? 1.2 : 0.8, // Longer duration on mobile for better visibility
+            opacity: 1,
+            y: 0,
+            ease: "power2.out",
+            immediateRender: true // Ensure animation renders immediately
+        };
+
+        // Adjust scrollTrigger settings for more responsive triggering
+        const scrollTriggerSettings = {
+            start: mediaQuery.matches ? "top 130%" : "top 85%", // Trigger earlier for mobile (set to 70% on mobile)
+            end: "bottom top", // The animation stays active until the section is fully out of view
+            toggleActions: "play none none none",
+            refreshPriority: 1, // Refresh before the scroll starts
+            markers: false // Set to true for debugging
+        };
+
+        // Update on screen size change
+        mediaQuery.addEventListener("change", () => {
+            ScrollTrigger.refresh(); // Refresh triggers on screen size change
+        });
+
+        gsap.utils.toArray('section').forEach(section => {
+            if (section.id !== "hero") {
+                gsap.fromTo(
+                    section,
+                    { opacity: 0, y: mediaQuery.matches ? 100 : 50 }, // Increase Y movement for mobile
+                    {
+                        ...animationSettings,
+                        scrollTrigger: {
+                            trigger: section,
+                            ...scrollTriggerSettings,
+                        }
+                    }
+                );
+            }
+        });
+
+        // Debounce scroll events to improve performance
+        let timeout;
+        window.addEventListener("scroll", () => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                ScrollTrigger.refresh(); // Refresh triggers after a delay to improve performance
+            }, 50); // Reduced debounce time for more immediate refresh
+        });
+
+        // Ensure ScrollTrigger is set up initially to avoid late triggering
+        window.addEventListener("load", () => {
+            ScrollTrigger.refresh(); // Force ScrollTrigger to refresh after page load
+        });
+    </script>
+
+    <script>
+        function updateStatus() {
+            const now = new Date();
+            const day = now.getDay(); // 0 is Sunday, 1 is Monday, etc.
+            const hour = now.getHours();
+            const minutes = now.getMinutes();
+            const currentTime = hour * 100 + minutes;
+
+            const indicator = document.getElementById('statusIndicator');
+            let isOpen = false;
+
+            if (day === 0) { // Sunday
+                isOpen = currentTime >= 1100 && currentTime <= 2100;
+            } else if (day >= 1 && day <= 5) { // Monday to Friday
+                isOpen = currentTime >= 1000 && currentTime <= 2200;
+            } else if (day === 6) { // Saturday
+                isOpen = currentTime >= 1100 && currentTime <= 2300;
+            }
+
+            if (isOpen) {
+                indicator.classList.remove('closed');
+                indicator.querySelector('.status-text').textContent = "We're Open";
+            } else {
+                indicator.classList.add('closed');
+                indicator.querySelector('.status-text').textContent = "We're Closed";
+            }
+        }
+
+        updateStatus();
+        setInterval(updateStatus, 60000); // Update every minute
+    </script>
+
+
+</body>
+
+</html>
