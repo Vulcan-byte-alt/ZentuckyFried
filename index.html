@@ -865,11 +865,19 @@
             }
         }
 
+        #navbar {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+        }
+
+
         @media (min-width:1024px){
             .cover-image{
                 margin-left: 250px;
             }
         }
+        
 
 
         @media (max-width: 599px) {
@@ -1023,11 +1031,6 @@
     </nav>
 
 
-
-
-
-
-
     <!-- Enhanced Hero Section -->
     <section id="hero" class="relative h-screen overflow-hidden">
         <div class="absolute inset-0">
@@ -1040,24 +1043,24 @@
         <div class="absolute inset-0">
             <div class="h-full flex items-center justify-center px-4">
                 <div class="text-center max-w-4xl mx-auto" id="hero-content">
-                    <span class="inline-block text-red-500 font-semibold mb-4 tracking-wider text-sm" id="hero-label">
+                    <span class="inline-block text-red-500 font-semibold mb-4 tracking-wider text-sm hidden" id="hero-label">
                         WELCOME TO ZENTUCKY
                     </span>
-                    <h1 class="text-7xl md:text-8xl font-bold mb-6 leading-tight tracking gradient-text"
+                    <h1 class="text-7xl md:text-8xl font-bold mb-6 leading-tight tracking gradient-text hidden"
                         id="hero-title">
                         Crispy Perfection Redefined
                     </h1>
-                    <p class="text-xl md:text-2xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed"
+                    <p class="text-xl md:text-2xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed hidden"
                         id="hero-subtitle">
                         Experience our legendary secret recipe, crafted to perfection and served with passion
                     </p>
                     <div class="space-x-6" id="hero-buttons">
                         <a href="#order"
-                            class="inline-block bg-red-600 text-white px-8 py-4 rounded-full hover:bg-red-700 transition-all transform hover:scale-105 hover:shadow-lg button-glow font-medium">
+                            class="inline-block bg-red-600 text-white px-8 py-4 rounded-full hover:bg-red-700 transition-all transform hover:scale-105 hover:shadow-lg button-glow font-medium hidden">
                             Order Now
                         </a>
                         <a href="#menu"
-                            class="inline-block bg-white/10 text-white border border-white/20 px-8 py-4 rounded-full hover:bg-white/20 transition-all transform hover:scale-105 hover:shadow-lg backdrop-blur-sm font-medium">
+                            class="inline-block bg-white/10 text-white border border-white/20 px-8 py-4 rounded-full hover:bg-white/20 transition-all transform hover:scale-105 hover:shadow-lg backdrop-blur-sm font-medium hidden">
                             Explore Menu
                         </a>
                     </div>
@@ -1672,10 +1675,24 @@
                             coverPage.addEventListener('transitionend', () => {
                                 coverPage.style.display = 'none';
                             });
-                        }, 200); // Adjust the delay for smoother animation timing
+                        }, 4000); // Adjust the delay for smoother animation timing
                     });
                 }
             });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+                const navbar = document.getElementById('navbar');
+
+                // Add a small delay to make the effect smooth
+                setTimeout(() => {
+                    navbar.style.opacity = '1';  // Fade the navbar in
+                    navbar.style.visibility = 'visible';  // Make sure it's visible
+                    navbar.style.transition = 'opacity 0.3s ease';  // Transition for smooth fade-in
+                }, 1000);  // Delay to allow other page elements to load first
+            });
+
     </script>
 
     <script>
@@ -1756,14 +1773,14 @@
     </script>
 
     <script>
-        // Register GSAP ScrollTrigger plugin
-            gsap.registerPlugin(ScrollTrigger);
+        gsap.registerPlugin(ScrollTrigger);
 
             const heroTL = gsap.timeline({ defaults: { ease: "power4.out" } });
 
             document.addEventListener('DOMContentLoaded', () => {
                 const heroVideo = document.getElementById('heroVideo');
                 const coverPage = document.getElementById('coverPage');
+                const heroElements = document.querySelectorAll('.hidden'); // Select all elements with 'hidden' class
 
                 // Listen for the 'canplaythrough' event to ensure the video is ready
                 if (heroVideo) {
@@ -1776,37 +1793,39 @@
                     });
                 }
 
-                // Start hero animation only after the cover page has finished its transition
+                // Start hero animation immediately after the cover page finishes its transition
                 coverPage.addEventListener('transitionend', () => {
-                    // Start GSAP hero animation
+                    // Remove the 'hidden' class to make elements visible after the cover page transition
+                    heroElements.forEach(el => el.classList.remove('hidden'));
+
+                    // Trigger GSAP hero animation immediately
                     heroTL
                         .from("#hero-label", {
                             y: 50,
                             opacity: 0,
-                            duration: 1,
-                            delay: 0.5
+                            duration: .8,
+                            visibility: 'visible' // Ensure it becomes visible after the animation
                         })
                         .from("#hero-title", {
                             y: 100,
                             opacity: 0,
-                            duration: 1.2,
-                            delay: -0.8
+                            duration: .8,
+                            visibility: 'visible'
                         })
                         .from("#hero-subtitle", {
                             y: 50,
                             opacity: 0,
-                            duration: 1,
-                            delay: -0.8
+                            duration: .8,
+                            visibility: 'visible'
                         })
                         .from("#hero-buttons", {
                             y: 50,
                             opacity: 0,
-                            duration: 1,
-                            delay: -0.8
+                            duration: .8,
+                            visibility: 'visible'
                         });
                 });
             });
-
             // Scroll effect for navigation bar
             window.addEventListener('scroll', () => {
                 const nav = document.querySelector('nav');
