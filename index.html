@@ -1832,33 +1832,31 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
                 const navbar = document.getElementById('navbar');
-                const heroVideo = document.getElementById('heroVideo');
+                const coverPage = document.getElementById('coverPage');
 
                 // Initially hide the navbar
                 navbar.style.opacity = '0';
                 navbar.style.visibility = 'hidden';
 
-                // Check if the page has been visited before using localStorage
-                const isFirstVisit = !localStorage.getItem('visited'); // Check if 'visited' is set in localStorage
+                // Function to check if coverPage is scrolled out of view
+                const checkCoverPage = () => {
+                    const coverPageRect = coverPage.getBoundingClientRect();
+                    const coverPageTop = coverPageRect.top;
+                    const viewportHeight = window.innerHeight;
 
-                // Set delay based on whether it's the first visit or not (simulating cache detection)
-                const delayTime = isFirstVisit ? 7000 : 1000;  // 1.5 seconds for first visit, 1 second if visited
-
-                // If it's the first visit, mark it as visited
-                if (isFirstVisit) {
-                    localStorage.setItem('visited', 'true');
-                }
-
-                // Wait for the heroVideo to load
-                heroVideo.addEventListener('loadeddata', () => {
-                    // Add the delay based on first visit or cache state
-                    setTimeout(() => {
-                        // Make the navbar visible after the delay
+                    // If coverPage is scrolled out of the viewport by 80% (i.e., only 20% visible), show navbar
+                    if (coverPageTop + coverPageRect.height < viewportHeight * 0.2) {
                         navbar.style.opacity = '1';
-                        navbar.style.visibility = 'visible'; // Ensure it's visible
-                        navbar.style.transition = 'opacity 0.3s ease'; // Smooth transition for fade-in
-                    }, delayTime); // Use the calculated delay time
-                });
+                        navbar.style.visibility = 'visible';
+                        navbar.style.transition = 'opacity 0.3s ease';
+                    }
+
+                    // Continue to call checkCoverPage on the next frame
+                    requestAnimationFrame(checkCoverPage);
+                };
+
+                // Start the animation frame loop
+                requestAnimationFrame(checkCoverPage);
             });
     </script>
 
