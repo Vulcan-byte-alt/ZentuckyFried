@@ -1838,15 +1838,20 @@
                 navbar.style.opacity = '0';
                 navbar.style.visibility = 'hidden';
 
-                // Check if the page is loaded from the cache
-                const isCached = performance.navigation.type === 2;
+                // Check if the page has been visited before using localStorage
+                const isFirstVisit = !localStorage.getItem('visited'); // Check if 'visited' is set in localStorage
 
-                // Set delay based on whether the page is cached or not
-                const delayTime = isCached ? 1000 : 3200;  // 1 second if cached, 1.5 seconds if not
+                // Set delay based on whether it's the first visit or not (simulating cache detection)
+                const delayTime = isFirstVisit ? 3500 : 1000;  // 1.5 seconds for first visit, 1 second if visited
+
+                // If it's the first visit, mark it as visited
+                if (isFirstVisit) {
+                    localStorage.setItem('visited', 'true');
+                }
 
                 // Wait for the heroVideo to load
                 heroVideo.addEventListener('loadeddata', () => {
-                    // Add the delay based on cached state
+                    // Add the delay based on first visit or cache state
                     setTimeout(() => {
                         // Make the navbar visible after the delay
                         navbar.style.opacity = '1';
