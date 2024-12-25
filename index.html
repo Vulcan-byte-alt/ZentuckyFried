@@ -852,6 +852,13 @@
             animation: fadeInImage 1s ease-in forwards;
         }
 
+        #navbar {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+        }
+
+
         /* Image fade-in animation */
         @keyframes fadeInImage {
             0% {
@@ -864,13 +871,6 @@
                 transform: translateY(0);
             }
         }
-
-        #navbar {
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0s linear 0.3s;
-        }
-
 
         @media (min-width:1024px){
             .cover-image{
@@ -1675,24 +1675,10 @@
                             coverPage.addEventListener('transitionend', () => {
                                 coverPage.style.display = 'none';
                             });
-                        }, 4000); // Adjust the delay for smoother animation timing
+                        }, 200); // Adjust the delay for smoother animation timing
                     });
                 }
             });
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-                const navbar = document.getElementById('navbar');
-
-                // Add a small delay to make the effect smooth
-                setTimeout(() => {
-                    navbar.style.opacity = '1';  // Fade the navbar in
-                    navbar.style.visibility = 'visible';  // Make sure it's visible
-                    navbar.style.transition = 'opacity 0.3s ease';  // Transition for smooth fade-in
-                }, 1000);  // Delay to allow other page elements to load first
-            });
-
     </script>
 
     <script>
@@ -1780,14 +1766,14 @@
             document.addEventListener('DOMContentLoaded', () => {
                 const heroVideo = document.getElementById('heroVideo');
                 const coverPage = document.getElementById('coverPage');
-                const heroElements = document.querySelectorAll('.hidden'); // Select all elements with 'hidden' class
+                const heroElements = document.querySelectorAll('#hero .hidden'); // Select only elements with 'hidden' class within #hero
 
                 // Listen for the 'canplaythrough' event to ensure the video is ready
                 if (heroVideo) {
                     heroVideo.addEventListener('canplaythrough', () => {
                         // Add a small delay (optional) to ensure smooth video start
                         setTimeout(() => {
-                            // Add the slide-up animation to the coverPage after video is ready
+                            // Add the slide-up animation to the coverPage after the video is ready
                             coverPage.classList.add('slide-up');
                         }, 200); // Delay to ensure video has loaded and enough buffered data
                     });
@@ -1803,29 +1789,33 @@
                         .from("#hero-label", {
                             y: 50,
                             opacity: 0,
-                            duration: .8,
+                            duration: 1,
                             visibility: 'visible' // Ensure it becomes visible after the animation
                         })
                         .from("#hero-title", {
                             y: 100,
                             opacity: 0,
-                            duration: .8,
+                            duration: 1.2,
+                            delay:-0.8,
                             visibility: 'visible'
                         })
                         .from("#hero-subtitle", {
                             y: 50,
                             opacity: 0,
-                            duration: .8,
+                            duration: 1,
+                            delay:-0.8,
                             visibility: 'visible'
                         })
                         .from("#hero-buttons", {
                             y: 50,
                             opacity: 0,
-                            duration: .8,
+                            duration: 1,
+                            delay:-0.8,
                             visibility: 'visible'
                         });
                 });
             });
+
             // Scroll effect for navigation bar
             window.addEventListener('scroll', () => {
                 const nav = document.querySelector('nav');
@@ -1836,6 +1826,19 @@
                     nav.classList.remove('glass-nav');
                     nav.classList.remove('shadow-lg');
                 }
+            });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+                const navbar = document.getElementById('navbar');
+
+                // Add a small delay to make the effect smooth
+                setTimeout(() => {
+                    navbar.style.opacity = '1';  // Fade the navbar in
+                    navbar.style.visibility = 'visible';  // Make sure it's visible
+                    navbar.style.transition = 'opacity 0.3s ease';  // Transition for smooth fade-in
+                }, 1000);  // Delay to allow other page elements to load first
             });
     </script>
 
