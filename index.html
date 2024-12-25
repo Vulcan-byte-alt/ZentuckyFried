@@ -1756,51 +1756,69 @@
     </script>
 
     <script>
+        // Register GSAP ScrollTrigger plugin
+            gsap.registerPlugin(ScrollTrigger);
 
-        gsap.registerPlugin(ScrollTrigger);
+            const heroTL = gsap.timeline({ defaults: { ease: "power4.out" } });
 
+            document.addEventListener('DOMContentLoaded', () => {
+                const heroVideo = document.getElementById('heroVideo');
+                const coverPage = document.getElementById('coverPage');
 
-        const heroTL = gsap.timeline({ defaults: { ease: "power4.out" } });
+                // Listen for the 'canplaythrough' event to ensure the video is ready
+                if (heroVideo) {
+                    heroVideo.addEventListener('canplaythrough', () => {
+                        // Add a small delay (optional) to ensure smooth video start
+                        setTimeout(() => {
+                            // Add the slide-up animation to the coverPage after video is ready
+                            coverPage.classList.add('slide-up');
+                        }, 200); // Delay to ensure video has loaded and enough buffered data
+                    });
+                }
 
-        heroTL
-            .from("#hero-label", {
-                y: 50,
-                opacity: 0,
-                duration: 1,
-                delay: 0.5
-            })
-            .from("#hero-title", {
-                y: 100,
-                opacity: 0,
-                duration: 1.2,
-                delay: -0.8
-            })
-            .from("#hero-subtitle", {
-                y: 50,
-                opacity: 0,
-                duration: 1,
-                delay: -0.8
-            })
-            .from("#hero-buttons", {
-                y: 50,
-                opacity: 0,
-                duration: 1,
-                delay: -0.8
+                // Start hero animation only after the cover page has finished its transition
+                coverPage.addEventListener('transitionend', () => {
+                    // Start GSAP hero animation
+                    heroTL
+                        .from("#hero-label", {
+                            y: 50,
+                            opacity: 0,
+                            duration: 1,
+                            delay: 0.5
+                        })
+                        .from("#hero-title", {
+                            y: 100,
+                            opacity: 0,
+                            duration: 1.2,
+                            delay: -0.8
+                        })
+                        .from("#hero-subtitle", {
+                            y: 50,
+                            opacity: 0,
+                            duration: 1,
+                            delay: -0.8
+                        })
+                        .from("#hero-buttons", {
+                            y: 50,
+                            opacity: 0,
+                            duration: 1,
+                            delay: -0.8
+                        });
+                });
             });
 
-
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 50) {
-                nav.classList.add('glass-nav');
-                nav.classList.add('shadow-lg');
-            } else {
-                nav.classList.remove('glass-nav');
-                nav.classList.remove('shadow-lg');
-            }
-        });
+            // Scroll effect for navigation bar
+            window.addEventListener('scroll', () => {
+                const nav = document.querySelector('nav');
+                if (window.scrollY > 50) {
+                    nav.classList.add('glass-nav');
+                    nav.classList.add('shadow-lg');
+                } else {
+                    nav.classList.remove('glass-nav');
+                    nav.classList.remove('shadow-lg');
+                }
+            });
     </script>
-
 
     <script>
 
