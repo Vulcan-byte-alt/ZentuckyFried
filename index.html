@@ -865,6 +865,12 @@
             }
         }
 
+        @media (min-width:1024px){
+            .cover-image{
+                margin-left: 250px;
+            }
+        }
+
 
         @media (max-width: 599px) {
             #menu {
@@ -927,6 +933,10 @@
 
             #broasted {
                 margin-left: 200px;
+            }
+
+            .cover-image{
+                margin-left: 20px;
             }
         }
 
@@ -1021,7 +1031,7 @@
     <!-- Enhanced Hero Section -->
     <section id="hero" class="relative h-screen overflow-hidden">
         <div class="absolute inset-0">
-            <video id="heroVideo" class="w-full h-full object-cover" autoplay muted playsinline loop>
+            <video id="heroVideo" preload="auto" class="w-full h-full object-cover" autoplay muted playsinline loop>
                 <source src="hero.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -1654,17 +1664,15 @@
         document.addEventListener('DOMContentLoaded', () => {
                 const heroVideo = document.getElementById('heroVideo');
                 if (heroVideo) {
-                    heroVideo.addEventListener('loadeddata', () => {
-                        // Add a small delay for better visual effect
+                    heroVideo.addEventListener('canplaythrough', () => {
                         setTimeout(() => {
                             const coverPage = document.getElementById('coverPage');
                             coverPage.classList.add('slide-up');
 
-                            // Remove the cover page from DOM after animation
                             coverPage.addEventListener('transitionend', () => {
                                 coverPage.style.display = 'none';
                             });
-                        });
+                        }, 200); // Adjust the delay for smoother animation timing
                     });
                 }
             });
